@@ -1,0 +1,18 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEyMzQ1LCJ0eXBlIjoiY3VzdG9keSIsImtleSI6IjB4...",
+    "payload": "eyJkb21haW4iOiJjbGFpbS1nb2Rtb2RlLXRva2VuLnZlcmNlbC5hcHAifQ",
+    "signature": "MHg..."
+  },
+  "frame": {
+    "version": "1",
+    "name": "GODMODE Token Mint",
+    "iconUrl": "https://claim-godmode-token.vercel.app/icon.png",
+    "homeUrl": "https://claim-godmode-token.vercel.app/",
+    "imageUrl": "https://claim-godmode-token.vercel.app/og-image.png",
+    "buttonTitle": "🚀 Mint $GODMODE",
+    "splashImageUrl": "https://claim-godmode-token.vercel.app/splash.png",
+    "splashBackgroundColor": "#667eea",
+    "webhookUrl": "https://claim-godmode-token.vercel.app/api/webhook"
+  }
+}
