@@ -2,12 +2,19 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/api/frame-simple"
-    },
-    {
       "source": "/app",
       "destination": "/app.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }
