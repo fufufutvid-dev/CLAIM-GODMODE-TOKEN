@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>$GODMODE Token - Free Mint on Base</title>
   
-  <!-- Farcaster Frame Tags -->
-  <meta property="fc:frame" content="vNext" />
-  <meta property="fc:frame:image" content="https://claim-godmode-token.vercel.app/og.png" />
-  <meta property="fc:frame:button:1" content="🚀 MINT NOW" />
-  <meta property="fc:frame:button:1:action" content="link" />
-  <meta property="fc:frame:button:1:target" content="https://claim-godmode-token.vercel.app/app" />
+  <!-- Farcaster Mini App Embed (NEW FORMAT) -->
+  <meta name="fc:miniapp" content='{"version":"1","imageUrl":"https://claim-godmode-token.vercel.app/og.png","button":{"title":"🚀 MINT NOW","action":{"type":"launch_miniapp","name":"GODMODE Token","url":"https://claim-godmode-token.vercel.app/app","splashImageUrl":"https://claim-godmode-token.vercel.app/og.png","splashBackgroundColor":"#764ba2"}}}' />
   
-  <!-- Open Graph -->
+  <!-- Backward Compatibility Frame Format -->
+  <meta name="fc:frame" content='{"version":"1","imageUrl":"https://claim-godmode-token.vercel.app/og.png","button":{"title":"🚀 MINT NOW","action":{"type":"launch_frame","name":"GODMODE Token","url":"https://claim-godmode-token.vercel.app/app","splashImageUrl":"https://claim-godmode-token.vercel.app/og.png","splashBackgroundColor":"#764ba2"}}}' />
+  
+  <!-- Open Graph (Fallback) -->
   <meta property="og:title" content="CLAIM TOKEN $GODMODE - FREE MINT" />
-  <meta property="og:description" content="Mint $GODMODE tokens on Base Mainnet. 1B supply, 50x max!" />
+  <meta property="og:description" content="Mint $GODMODE tokens on Base Mainnet. 1B supply, 50x max per user!" />
   <meta property="og:image" content="https://claim-godmode-token.vercel.app/og.png" />
   
   <style>
     body {
       margin: 0;
-      font-family: system-ui;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
       min-height: 100vh;
@@ -32,55 +31,87 @@
     }
     .container {
       max-width: 600px;
+      width: 100%;
       background: rgba(255,255,255,0.1);
-      padding: 50px;
+      padding: 50px 40px;
       border-radius: 24px;
       backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
     }
     h1 {
       font-size: 72px;
+      font-weight: 900;
       margin: 0 0 20px 0;
       background: linear-gradient(135deg, #ffd700, #ffed4e);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
     }
     p {
       font-size: 24px;
       margin: 10px 0;
-      opacity: 0.9;
+      opacity: 0.95;
+      font-weight: 600;
     }
     .stats {
       display: flex;
       gap: 20px;
       justify-content: center;
       margin: 40px 0;
+      flex-wrap: wrap;
     }
     .stat {
       background: rgba(255,255,255,0.15);
-      padding: 20px;
-      border-radius: 12px;
-      min-width: 100px;
+      padding: 25px 20px;
+      border-radius: 16px;
+      min-width: 120px;
+      border: 1px solid rgba(255,255,255,0.1);
     }
     .stat-value {
-      font-size: 32px;
-      font-weight: bold;
+      font-size: 36px;
+      font-weight: 700;
       color: #ffd700;
     }
     .stat-label {
       font-size: 12px;
       opacity: 0.8;
-      margin-top: 5px;
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
     .button {
       display: inline-block;
       padding: 20px 60px;
       background: linear-gradient(135deg, #ffd700, #ffed4e);
-      color: black;
+      color: #000;
       text-decoration: none;
       border-radius: 16px;
       font-size: 24px;
-      font-weight: bold;
+      font-weight: 700;
       margin-top: 30px;
+      transition: all 0.3s;
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+    }
+    .info {
+      font-size: 14px;
+      margin-top: 40px;
+      opacity: 0.7;
+      line-height: 1.6;
+    }
+    .info strong {
+      color: #ffd700;
+      opacity: 1;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 48px; }
+      p { font-size: 18px; }
+      .stats { flex-direction: column; }
     }
   </style>
 </head>
@@ -92,23 +123,25 @@
     <div class="stats">
       <div class="stat">
         <div class="stat-value">1B</div>
-        <div class="stat-label">SUPPLY</div>
+        <div class="stat-label">Total Supply</div>
       </div>
       <div class="stat">
         <div class="stat-value">50x</div>
-        <div class="stat-label">MAX</div>
+        <div class="stat-label">Max Per User</div>
       </div>
       <div class="stat">
         <div class="stat-value">45K</div>
-        <div class="stat-label">PER MINT</div>
+        <div class="stat-label">Per Mint</div>
       </div>
     </div>
     
     <a href="/app" class="button">🚀 MINT NOW</a>
     
-    <p style="font-size: 14px; margin-top: 40px; opacity: 0.7;">
-      Contract: 0xfe0b...1305 • Base Mainnet
-    </p>
+    <div class="info">
+      <strong>Contract:</strong> 0xfe0b...1305<br>
+      <strong>Network:</strong> Base Mainnet (Chain ID: 8453)<br>
+      <strong>Price:</strong> 0.00012 ETH + gas
+    </div>
   </div>
 </body>
 </html>
