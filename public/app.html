@@ -383,18 +383,31 @@
     <script type="module">
         import sdk from 'https://esm.sh/@farcaster/frame-sdk@0.1.1';
         
-        // Initialize SDK
+        console.log('🚀 Starting Farcaster SDK initialization...');
+        
+        // CRITICAL: Initialize SDK and call ready() immediately
+        let frameContext = null;
+        let sdkReady = false;
+        
         (async () => {
             try {
                 window.frameSDK = sdk;
-                const context = await sdk.context;
-                console.log('Frame context:', context);
+                
+                // Get context
+                frameContext = await sdk.context;
+                console.log('✅ Frame context loaded:', frameContext);
+                
+                // CRITICAL: Call ready() to signal we're ready
                 await sdk.actions.ready();
-                console.log('✅ Farcaster SDK ready');
+                console.log('✅ sdk.actions.ready() called successfully');
+                
+                sdkReady = true;
                 window.isFarcasterFrame = true;
                 window.dispatchEvent(new Event('farcaster-ready'));
+                
+                console.log('✅ Farcaster SDK fully initialized');
             } catch (err) {
-                console.log('Standalone mode:', err);
+                console.log('ℹ️ Running in standalone mode:', err.message);
                 window.isFarcasterFrame = false;
                 window.dispatchEvent(new Event('farcaster-ready'));
             }
@@ -425,20 +438,20 @@
         let isConnected = false;
 
         async function initApp() {
-            console.log('Initializing app...');
+            console.log('🔄 Initializing app...');
             
             while (!window.ethers) {
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
-            console.log('✅ Ethers loaded');
+            console.log('✅ Ethers.js loaded');
 
             await loadContractData();
 
             if (window.isFarcasterFrame) {
-                console.log('Detected Farcaster Frame mode');
+                console.log('🎯 Farcaster Frame mode detected');
                 setTimeout(() => autoConnectFarcasterWallet(), 500);
             } else {
-                console.log('Standalone mode');
+                console.log('🌐 Standalone browser mode');
             }
         }
 
@@ -448,11 +461,11 @@
             try {
                 const sdk = window.frameSDK;
                 if (!sdk?.wallet?.ethProvider) {
-                    console.log('No Farcaster wallet available');
+                    console.log('⚠️ Farcaster wallet not available');
                     return;
                 }
 
-                console.log('Connecting Farcaster wallet...');
+                console.log('🔗 Attempting Farcaster wallet connection...');
                 showStatus('🔗 Connecting to Farcaster wallet...', 'info');
 
                 let accounts = await sdk.wallet.ethProvider.request({
@@ -465,10 +478,13 @@
                     });
                 }
 
-                if (!accounts?.length) return;
+                if (!accounts?.length) {
+                    console.log('❌ No accounts found');
+                    return;
+                }
 
                 userAddress = accounts[0];
-                console.log('Address:', userAddress);
+                console.log('✅ Wallet address:', userAddress);
                 
                 provider = new window.ethers.providers.Web3Provider(sdk.wallet.ethProvider);
                 await ensureCorrectNetwork(provider, sdk.wallet.ethProvider);
@@ -480,19 +496,19 @@
                 updateUI();
                 await updateUserMints();
                 showStatus('✅ Farcaster wallet connected!', 'success');
-                console.log('✅ Auto-connected');
+                console.log('✅ Auto-connect successful');
             } catch (error) {
-                console.error('Auto-connect error:', error);
+                console.error('❌ Auto-connect error:', error);
             }
         }
 
         async function ensureCorrectNetwork(provider, ethProvider) {
             try {
                 const network = await provider.getNetwork();
-                console.log('Network:', network.chainId);
+                console.log('🌐 Current network:', network.chainId);
                 
                 if (network.chainId !== BASE_CHAIN_ID) {
-                    console.log('Switching to Base...');
+                    console.log('🔄 Switching to Base Mainnet...');
                     showStatus('🔄 Switching to Base Mainnet...', 'info');
                     
                     try {
@@ -522,7 +538,7 @@
                 
                 document.getElementById('networkInfo').textContent = '✅ Connected to Base Mainnet';
             } catch (error) {
-                console.error('Network error:', error);
+                console.error('❌ Network error:', error);
                 document.getElementById('networkInfo').textContent = '⚠️ Please switch to Base Mainnet';
                 throw error;
             }
@@ -538,7 +554,7 @@
                 
                 updateProgress(totalMints.toNumber(), totalAvailable.toNumber());
             } catch (error) {
-                console.error('Error loading contract:', error);
+                console.error('❌ Error loading contract:', error);
             }
         }
 
@@ -579,7 +595,7 @@
                 await updateUserMints();
                 showStatus('✅ Wallet connected!', 'success');
             } catch (error) {
-                console.error('Connection error:', error);
+                console.error('❌ Connection error:', error);
                 showStatus('❌ ' + error.message, 'error');
             }
         });
@@ -636,7 +652,7 @@
                     (parseFloat(MINT_PRICE) * currentMintAmount).toString()
                 );
 
-                console.log('Minting:', { amount: currentMintAmount, value: window.ethers.utils.formatEther(value) });
+                console.log('🎯 Minting:', { amount: currentMintAmount, value: window.ethers.utils.formatEther(value) });
 
                 const tx = await contract.mint(currentMintAmount, { 
                     value,
@@ -644,7 +660,7 @@
                 });
                 
                 showStatus('⏳ Transaction submitted! Waiting for confirmation...', 'info');
-                console.log('TX:', tx.hash);
+                console.log('📝 TX hash:', tx.hash);
 
                 await tx.wait();
                 
@@ -661,7 +677,7 @@
                 mintBtn.disabled = false;
                 mintBtn.textContent = '🚀 MINT NOW';
             } catch (error) {
-                console.error('Mint error:', error);
+                console.error('❌ Mint error:', error);
                 let errorMessage = 'Unknown error';
                 
                 if (error.message.includes('user rejected') || error.code === 4001) {
@@ -702,7 +718,7 @@
                     const mints = await contract.userMintCount(userAddress);
                     document.getElementById('userMints').textContent = mints.toNumber();
                 } catch (error) {
-                    console.error('Error updating user mints:', error);
+                    console.error('❌ Error updating user mints:', error);
                 }
             }
         }
