@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLAIM TOKEN $GODMODE - FREE MINT</title>
+
+    <!-- Farcaster Frame Meta Tags -->
+    <meta property="fc:frame" content="vNext">
+    <meta property="fc:frame:image" content="https://claim-godmode-token.vercel.app/og.png">
+    <meta property="fc:frame:image:aspect_ratio" content="1.91:1">
+    <meta property="fc:frame:button:1" content="🚀 MINT NOW">
+    <meta property="fc:frame:button:1:action" content="link">
+    <meta property="fc:frame:button:1:target" content="https://claim-godmode-token.vercel.app/mint">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="CLAIM TOKEN $GODMODE - FREE MINT">
+    <meta property="og:description" content="Mint $GODMODE tokens on Base Mainnet. 1B total supply, 50x max per user!">
+    <meta property="og:image" content="https://claim-godmode-token.vercel.app/og.png">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: float 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        .container {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            font-size: 52px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+            margin-bottom: 8px;
+            animation: shimmer 3s linear infinite;
+            background-size: 200% auto;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .logo p {
+            font-size: 16px;
+            opacity: 0.95;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .network-badge {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .network-badge span {
+            display: inline-block;
+            background: rgba(0, 82, 255, 0.25);
+            border: 2px solid rgba(0, 82, 255, 0.4);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card .label {
+            font-size: 11px;
+            opacity: 0.85;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-card .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .progress-section {
+            margin-bottom: 25px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ffed4e, #ffd700);
+            background-size: 200% 100%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            animation: progressShimmer 2s linear infinite;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progressGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .mint-section {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mint-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .mint-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mint-btn:hover:not(:disabled) {
+            background: rgba(255, 215, 0, 0.25);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .mint-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .mint-amount {
+            font-size: 42px;
+            font-weight: 700;
+            min-width: 70px;
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .mint-info {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+
+        .mint-info p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 6px 0;
+            font-weight: 500;
+        }
+
+        .mint-info .highlight {
+            color: #ffd700;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .connect-btn, .mint-action-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .connect-btn::before, .mint-action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .connect-btn:hover::before, .mint-action-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .connect-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .mint-action-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .mint-action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .mint-action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .wallet-info {
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 14px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .network-info {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 12px;
+            padding: 10px;
+            background: rgba(0, 123, 255, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 123, 255, 0.3);
+            font-weight: 600;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+            display: none;
+            font-weight: 600;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-message.success {
+            background: rgba(16, 185, 129, 0.25);
+            border: 2px solid rgba(16, 185, 129, 0.5);
+            display: block;
+        }
+
+        .status-message.error {
+            background: rgba(239, 68, 68, 0.25);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            display: block;
+        }
+
+        .status-message.info {
+            background: rgba(59, 130, 246, 0.25);
+            border: 2px solid rgba(59, 130, 246, 0.5);
+            display: block;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .share-btn {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(138, 99, 210, 0.2);
+            color: #fff;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .share-btn:hover {
+            background: rgba(138, 99, 210, 0.35);
+            border-color: rgba(138, 99, 210, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(138, 99, 210, 0.3);
+        }
+
+        .farcaster-badge {
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(138, 99, 210, 0.15);
+            border: 2px solid rgba(138, 99, 210, 0.3);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 25px;
+            }
+            
+            .logo h1 {
+                font-size: 42px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>$GODMODE</h1>
+            <p>Free Mint on Base</p>
+        </div>
+
+        <div class="network-badge">
+            <span>⛓️ Base Mainnet</span>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="label">Total Supply</div>
+                <div class="value">1B</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Max Per User</div>
+                <div class="value">50x</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Per Mint</div>
+                <div class="value">45K</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Your Mints</div>
+                <div class="value" id="userMints">0</div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-header">
+                <span>🔥 Minting Progress</span>
+                <span id="progressText">0 / 20,000</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="mint-section">
+            <div class="mint-controls">
+                <button class="mint-btn" id="decreaseBtn">−</button>
+                <div class="mint-amount" id="mintAmount">1</div>
+                <button class="mint-btn" id="increaseBtn">+</button>
+            </div>
+
+            <div class="mint-info">
+                <p>Tokens: <span class="highlight" id="tokensAmount">45,000</span></p>
+                <p>Cost: <span class="highlight" id="costAmount">0.00012 ETH</span></p>
+                <p style="font-size: 11px; opacity: 0.7; margin-top: 8px;">*Small network fee applies</p>
+            </div>
+
+            <div id="walletSection">
+                <button class="connect-btn" id="connectBtn">
+                    🔗 Connect Farcaster Wallet
+                </button>
+            </div>
+
+            <div id="mintSection" style="display: none;">
+                <div class="network-info" id="networkInfo"></div>
+                <div class="wallet-info" id="walletInfo"></div>
+                <button class="mint-action-btn" id="mintBtn">
+                    🚀 MINT NOW
+                </button>
+                <button class="share-btn" id="shareBtn" style="display: none;">
+                    🎭 Cast to Farcaster
+                </button>
+            </div>
+        </div>
+
+        <div class="status-message" id="statusMessage"></div>
+
+        <div class="farcaster-badge">
+            🎭 Exclusive for Farcaster Community
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script type="module">
+        import sdk from 'https://esm.sh/@farcaster/frame-sdk@0.1.1';
+        
+        // Initialize Farcaster SDK
+        (async () => {
+            try {
+                window.frameSDK = sdk;
+                const context = await sdk.context;
+                console.log('✅ Farcaster context:', context);
+                
+                await sdk.actions.ready();
+                console.log('✅ Farcaster SDK ready');
+                
+                window.isFarcasterFrame = true;
+                window.farcasterContext = context;
+                window.dispatchEvent(new Event('farcaster-ready'));
+            } catch (err) {
+                console.log('⚠️ Not in Farcaster frame:', err);
+                window.isFarcasterFrame = false;
+                window.dispatchEvent(new Event('farcaster-ready'));
+            }
+        })();
+    </script>
+    
+    <script>
+        const CONTRACT_ADDRESS = '0xfe0b0148A535ab66F83e19756A20A0b9fCAF1305';
+        const BASE_CHAIN_ID = 8453;
+        const BASE_CHAIN_ID_HEX = '0x2105';
+        const TOKENS_PER_MINT = 45000;
+        const MINT_PRICE = '0.00012';
+        const MAX_MINTS_PER_USER = 50;
+
+        const CONTRACT_ABI = [
+            "function mint(uint256 mintCount) external payable",
+            "function totalMintCount() external view returns (uint256)",
+            "function userMintCount(address) external view returns (uint256)",
+            "function remainingMints() external view returns (uint256)",
+            "function remainingMintsForUser(address) external view returns (uint256)",
+            "function TOTAL_MINTS_AVAILABLE() external view returns (uint256)"
+        ];
+
+        let provider = null;
+        let signer = null;
+        let contract = null;
+        let userAddress = null;
+        let currentMintAmount = 1;
+        let isConnected = false;
+
+        async function initApp() {
+            console.log('🚀 Initializing app...');
+            
+            while (!window.ethers) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            console.log('✅ Ethers.js loaded');
+
+            await loadContractData();
+
+            if (window.isFarcasterFrame) {
+                console.log('🎭 Farcaster Frame detected - auto-connecting...');
+                setTimeout(async () => {
+                    await autoConnectFarcasterWallet();
+                }, 800);
+            } else {
+                console.log('🌐 Standalone mode');
+            }
+        }
+
+        window.addEventListener('farcaster-ready', initApp);
+
+        async function autoConnectFarcasterWallet() {
+            try {
+                const sdk = window.frameSDK;
+                if (!sdk || !sdk.wallet || !sdk.wallet.ethProvider) {
+                    console.log('⚠️ Farcaster wallet not available');
+                    return;
+                }
+
+                console.log('🔗 Connecting to Farcaster wallet...');
+                showStatus('🔗 Connecting to Farcaster wallet...', 'info');
+
+                let accounts = await sdk.wallet.ethProvider.request({
+                    method: 'eth_accounts'
+                });
+                
+                if (!accounts || accounts.length === 0) {
+                    accounts = await sdk.wallet.ethProvider.request({
+                        method: 'eth_requestAccounts'
+                    });
+                }
+
+                if (!accounts || accounts.length === 0) {
+                    console.log('❌ No accounts found');
+                    return;
+                }
+
+                userAddress = accounts[0];
+                console.log('✅ Connected:', userAddress);
+                
+                provider = new window.ethers.providers.Web3Provider(sdk.wallet.ethProvider, 'any');
+                signer = provider.getSigner();
+                contract = new window.ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                isConnected = true;
+
+                await ensureCorrectNetwork(sdk.wallet.ethProvider);
+                
+                updateUI();
+                await updateUserMints();
+                showStatus('✅ Connected to Farcaster wallet!', 'success');
+
+            } catch (error) {
+                console.error('❌ Auto-connect error:', error);
+                showStatus('⚠️ Connect wallet to start minting', 'info');
+            }
+        }
+
+        async function ensureCorrectNetwork(ethProvider) {
+            try {
+                const network = await provider.getNetwork();
+                console.log('📡 Current network:', network.chainId);
+                
+                if (network.chainId !== BASE_CHAIN_ID) {
+                    console.log('🔄 Switching to Base Mainnet...');
+                    showStatus('🔄 Switching to Base Mainnet...', 'info');
+                    
+                    try {
+                        await ethProvider.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: BASE_CHAIN_ID_HEX }],
+                        });
+                    } catch (switchError) {
+                        if (switchError.code === 4902) {
+                            await ethProvider.request({
+                                method: 'wallet_addEthereumChain',
+                                params: [{
+                                    chainId: BASE_CHAIN_ID_HEX,
+                                    chainName: 'Base Mainnet',
+                                    nativeCurrency: {
+                                        name: 'Ethereum',
+                                        symbol: 'ETH',
+                                        decimals: 18
+                                    },
+                                    rpcUrls: ['https://mainnet.base.org'],
+                                    blockExplorerUrls: ['https://basescan.org']
+                                }]
+                            });
+                        } else {
+                            throw switchError;
+                        }
+                    }
+                    
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+                
+                document.getElementById('networkInfo').textContent = '✅ Connected to Base Mainnet';
+            } catch (error) {
+                console.error('❌ Network switch error:', error);
+                document.getElementById('networkInfo').textContent = '⚠️ Please switch to Base Mainnet';
+                throw error;
+            }
+        }
+
+        async function loadContractData() {
+            try {
+                const baseProvider = new window.ethers.providers.JsonRpcProvider('https://mainnet.base.org');
+                const readContract = new window.ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, baseProvider);
+                
+                const totalMints = await readContract.totalMintCount();
+                const totalAvailable = await readContract.TOTAL_MINTS_AVAILABLE();
+                
+                updateProgress(totalMints.toNumber(), totalAvailable.toNumber());
+            } catch (error) {
+                console.error('❌ Error loading contract data:', error);
+            }
+        }
+
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            try {
+                showStatus('🔗 Connecting wallet...', 'info');
+                
+                const sdk = window.frameSDK;
+                
+                if (sdk && sdk.wallet && sdk.wallet.ethProvider) {
+                    const accounts = await sdk.wallet.ethProvider.request({
+                        method: 'eth_requestAccounts'
+                    });
+
+                    if (!accounts || accounts.length === 0) {
+                        throw new Error('No Farcaster wallet found');
+                    }
+
+                    userAddress = accounts[0];
+                    provider = new window.ethers.providers.Web3Provider(sdk.wallet.ethProvider, 'any');
+                    signer = provider.getSigner();
+                    await ensureCorrectNetwork(sdk.wallet.ethProvider);
+                } else if (window.ethereum) {
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    userAddress = accounts[0];
+                    provider = new window.ethers.providers.Web3Provider(window.ethereum);
+                    signer = provider.getSigner();
+                    await ensureCorrectNetwork(window.ethereum);
+                } else {
+                    throw new Error('Please install MetaMask or open in Farcaster app');
+                }
+
+                contract = new window.ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                isConnected = true;
+
+                updateUI();
+                await updateUserMints();
+                showStatus('✅ Wallet connected!', 'success');
+            } catch (error) {
+                console.error('❌ Connection error:', error);
+                showStatus('❌ ' + error.message, 'error');
+            }
+        });
+
+        function updateUI() {
+            document.getElementById('walletSection').style.display = 'none';
+            document.getElementById('mintSection').style.display = 'block';
+            document.getElementById('walletInfo').textContent = 
+                `🔗 ${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+        }
+
+        document.getElementById('decreaseBtn').addEventListener('click', () => {
+            if (currentMintAmount > 1) {
+                currentMintAmount--;
+                updateMintDisplay();
+            }
+        });
+
+        document.getElementById('increaseBtn').addEventListener('click', () => {
+            if (currentMintAmount < MAX_MINTS_PER_USER) {
+                currentMintAmount++;
+                updateMintDisplay();
+            }
+        });
+
+        function updateMintDisplay() {
+            document.getElementById('mintAmount').textContent = currentMintAmount;
+            document.getElementById('tokensAmount').textContent = 
+                (TOKENS_PER_MINT * currentMintAmount).toLocaleString();
+            document.getElementById('costAmount').textContent = 
+                (parseFloat(MINT_PRICE) * currentMintAmount).toFixed(5) + ' ETH';
+        }
+
+        document.getElementById('mintBtn').addEventListener('click', async () => {
+            if (!isConnected || !contract) {
+                showStatus('❌ Please connect wallet first', 'error');
+                return;
+            }
+
+            try {
+                const mintBtn = document.getElementById('mintBtn');
+                mintBtn.disabled = true;
+                mintBtn.innerHTML = '<span class="loading"></span> Minting...';
+
+                const baseProvider = new window.ethers.providers.JsonRpcProvider('https://mainnet.base.org');
+                const readContract = new window.ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, baseProvider);
+                
+                const userMints = await readContract.userMintCount(userAddress);
+                if (userMints.toNumber() + currentMintAmount > MAX_MINTS_PER_USER) {
+                    throw new Error(`Exceeds maximum ${MAX_MINTS_PER_USER} mints per user`);
+                }
+
+                const value = window.ethers.utils.parseEther(
+                    (parseFloat(MINT_PRICE) * currentMintAmount).toString()
+                );
+
+                console.log('🎯 Minting:', {
+                    amount: currentMintAmount,
+                    value: window.ethers.utils.formatEther(value),
+                    address: userAddress
+                });
+
+                const tx = await contract.mint(currentMintAmount, { 
+                    value,
+                    gasLimit: 300000
+                });
+                
+                showStatus('⏳ Transaction submitted! Waiting for confirmation...', 'info');
+                console.log('📝 Transaction hash:', tx.hash);
+
+                const receipt = await tx.wait();
+                console.log('✅ Transaction confirmed:', receipt);
+                
+                showStatus(
+                    `🎉 Successfully minted ${(currentMintAmount * TOKENS_PER_MINT).toLocaleString()} $GODMODE tokens!`,
+                    'success'
+                );
+                
+                await updateUserMints();
+                await loadContractData();
+                
+                document.getElementById('shareBtn').style.display = 'block';
+                
+                mintBtn.disabled = false;
+                mintBtn.textContent = '🚀 MINT NOW';
+            } catch (error) {
+                console.error('❌ Mint error:', error);
+                let errorMessage = 'Unknown error';
+                
+                if (error.message.includes('user rejected') || error.code === 4001) {
+                    errorMessage = 'Transaction rejected by user';
+                } else if (error.message.includes('insufficient funds')) {
+                    errorMessage = 'Insufficient ETH balance';
+                } else if (error.data && error.data.message) {
+                    errorMessage = error.data.message;
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showStatus('❌ Mint failed: ' + errorMessage, 'error');
+                
+                const mintBtn = document.getElementById('mintBtn');
+                mintBtn.disabled = false;
+                mintBtn.textContent = '🚀 MINT NOW';
+            }
+        });
+
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const mintedAmount = (currentMintAmount * TOKENS_PER_MINT).toLocaleString();
+            const text = encodeURIComponent(
+                `Just minted ${mintedAmount} $GODMODE tokens! 🚀\n\nJoin the FREE MINT on Base Mainnet!\n\n#GODMODE #BaseMint #Farcaster`
+            );
+            const url = encodeURIComponent('https://claim-godmode-token.vercel.app/');
+            
+            // Farcaster cast URL with proper formatting
+            const castUrl = `https://warpcast.com/~/compose?text=${text}&embeds[]=${url}`;
+            
+            if (window.frameSDK && window.frameSDK.actions && window.frameSDK.actions.openUrl) {
+                window.frameSDK.actions.openUrl(castUrl);
+            } else {
+                window.open(castUrl, '_blank');
+            }
+        });
+
+        async function updateUserMints() {
+            if (contract && userAddress) {
+                try {
+                    const mints = await contract.userMintCount(userAddress);
+                    document.getElementById('userMints').textContent = mints.toNumber();
+                } catch (error) {
+                    console.error('❌ Error updating user mints:', error);
+                }
+            }
+        }
+
+        function updateProgress(current, total) {
+            const percentage = Math.min((current / total) * 100, 100);
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = 
+                `${current.toLocaleString()} / ${total.toLocaleString()}`;
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            
+            if (type === 'success' || type === 'error') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Update progress every 30 seconds
+        setInterval(loadContractData, 30000);
+    </script>
+</body>
+</html>
