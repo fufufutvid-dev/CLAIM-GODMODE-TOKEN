@@ -3,200 +3,583 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLAIM $GODMODE TOKEN - Free Mint</title>
-    
-    <!-- Farcaster Frame Meta Tags -->
-    <meta property="fc:frame" content="vNext" />
-    <meta property="fc:frame:image" content="https://claim-godmode-token.vercel.app/frame-image.png" />
-    <meta property="fc:frame:image:aspect_ratio" content="1:1" />
-    <meta property="fc:frame:button:1" content="🚀 Open Mint App" />
-    <meta property="fc:frame:button:1:action" content="link" />
-    <meta property="fc:frame:button:1:target" content="https://claim-godmode-token.vercel.app/mint" />
-    <meta property="fc:frame:post_url" content="https://claim-godmode-token.vercel.app/api/frame" />
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="CLAIM $GODMODE TOKEN" />
-    <meta property="og:description" content="45,000 tokens per mint • Max 50 mints • 1B supply • Base Mainnet" />
-    <meta property="og:image" content="https://claim-godmode-token.vercel.app/frame-image.png" />
-    
+    <title>$GODMODE Token Mint</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: white;
+            padding: 12px;
+            overflow-x: hidden;
         }
 
         .container {
+            max-width: 440px;
+            margin: 0 auto;
+            padding-top: 12px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 12px;
+        }
+
+        .header {
             text-align: center;
-            max-width: 600px;
+            margin-bottom: 20px;
         }
 
         .logo {
-            font-size: 72px;
+            font-size: 36px;
             font-weight: 900;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .tagline {
-            font-size: 24px;
-            margin-bottom: 40px;
-            opacity: 0.95;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .stat-value {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #667eea;
-            padding: 20px 50px;
-            border-radius: 50px;
-            font-size: 20px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: transform 0.2s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .instructions {
-            margin-top: 40px;
-            padding: 30px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .instructions h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .steps {
-            text-align: left;
-            display: inline-block;
-        }
-
-        .step {
-            margin-bottom: 15px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .step-number {
-            background: rgba(255,255,255,0.2);
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
         }
 
         .badge {
             display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 20px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .info-row:last-child { margin-bottom: 0; }
+        .info-row span:last-child { font-weight: 700; }
+
+        .progress-section {
+            margin-bottom: 18px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 16px;
+            background: #e5e5e5;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: #f7f7f7;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #888;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .mint-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .mint-btn {
+            width: 38px;
+            height: 38px;
+            border: none;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mint-btn:active { transform: scale(0.95); background: #5568d3; }
+        .mint-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .mint-input {
+            width: 64px;
+            height: 38px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            border: 2px solid #e5e5e5;
+            border-radius: 10px;
+            background: #fafafa;
+            outline: none;
+        }
+
+        .cost-display {
+            text-align: center;
+            margin-bottom: 14px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .cost-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:active { transform: translateY(1px); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .status-msg {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .msg-success { background: #d4edda; color: #155724; display: block; }
+        .msg-error { background: #f8d7da; color: #721c24; display: block; }
+        .msg-info { background: #d1ecf1; color: #0c5460; display: block; }
+
+        .wallet-info {
+            margin-top: 12px;
+            padding: 10px;
+            background: #f7f7f7;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+            display: none;
+        }
+
+        .wallet-addr {
+            font-family: monospace;
+            color: #667eea;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .fc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(138, 99, 210, 0.2);
+            color: #8a63d2;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">$GODMODE</div>
-        <div class="tagline">🎁 Free Token Mint on Base Mainnet</div>
+        <div class="card">
+            <div class="header">
+                <div class="logo">$GODMODE</div>
+                <div class="badge">🎁 FREE MINT</div>
+                <div class="fc-badge" id="fcStatus" style="display: none;">
+                    ✓ Farcaster
+                </div>
+            </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">45,000</div>
-                <div class="stat-label">Tokens per Mint</div>
+            <div class="info-box">
+                <div class="info-row">
+                    <span>Total Supply</span>
+                    <span>1,000,000,000</span>
+                </div>
+                <div class="info-row">
+                    <span>Per Mint</span>
+                    <span>45,000 Tokens</span>
+                </div>
+                <div class="info-row">
+                    <span>Max/User</span>
+                    <span>50 Mints</span>
+                </div>
+                <div class="info-row">
+                    <span>Network</span>
+                    <span>Base Mainnet</span>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">50x</div>
-                <div class="stat-label">Max per User</div>
+
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>Minting Progress</span>
+                    <span><span id="minted">0</span> / 20,000</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress" style="width: 0%;">0%</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">1B</div>
-                <div class="stat-label">Total Supply</div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Your Mints</div>
+                    <div class="stat-value" id="userMints">- / 50</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Remaining</div>
+                    <div class="stat-value" id="remaining">20,000</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">20,000</div>
-                <div class="stat-label">Total Mints</div>
+
+            <div class="mint-controls">
+                <button class="mint-btn" id="decBtn">-</button>
+                <input type="number" class="mint-input" id="amount" value="1" min="1" max="50" readonly>
+                <button class="mint-btn" id="incBtn">+</button>
+            </div>
+
+            <div class="cost-display">
+                Total: <span class="cost-value" id="cost">0.00012 ETH</span>
+            </div>
+
+            <button class="action-btn btn-primary" id="mainBtn">
+                <span id="btnText">Loading...</span>
+            </button>
+
+            <div class="status-msg" id="statusMsg"></div>
+
+            <div class="wallet-info" id="walletInfo">
+                <div>Connected Wallet</div>
+                <div class="wallet-addr" id="walletAddr"></div>
             </div>
         </div>
 
-        <a href="/mint" class="cta-button">🚀 START MINTING</a>
-
-        <div class="instructions">
-            <h3>📱 How to Mint from Warpcast</h3>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>Cast this link on Warpcast</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>Click the "🚀 Open Mint App" button</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>Connect your wallet in the app</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div>Mint your $GODMODE tokens!</div>
-                </div>
-            </div>
-            <div class="badge">⛓️ Base Mainnet • Contract: 0xfe0b...1305</div>
+        <div class="footer">
+            <a href="https://basescan.org/address/0xfe0b0148A535ab66F83e19756A20A0b9fCAF1305" target="_blank">
+                View Contract on BaseScan →
+            </a>
         </div>
     </div>
+
+    <script type="module">
+        const CONTRACT = '0xfe0b0148A535ab66F83e19756A20A0b9fCAF1305';
+        const CHAIN_ID = 8453;
+        const PRICE = '0.00012';
+        const ABI = [
+            "function mint(uint256 count) external payable",
+            "function totalMintCount() view returns (uint256)",
+            "function userMintCount(address) view returns (uint256)",
+            "function remainingMints() view returns (uint256)"
+        ];
+
+        let provider, signer, contract, userAddr, farcasterContext;
+        let isConnected = false;
+
+        // Initialize Farcaster SDK
+        async function initFarcaster() {
+            try {
+                if (window.parent !== window) {
+                    // Running in iframe (Farcaster context)
+                    const sdk = await import('https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk@0.0.9/+esm');
+                    farcasterContext = await sdk.default.context;
+                    
+                    if (farcasterContext) {
+                        document.getElementById('fcStatus').style.display = 'inline-flex';
+                        console.log('Farcaster context:', farcasterContext);
+                        
+                        // Signal ready
+                        sdk.default.actions.ready();
+                    }
+                }
+            } catch (err) {
+                console.log('Not in Farcaster:', err);
+            }
+        }
+
+        // Update amount
+        function updateCost() {
+            const amt = parseInt(document.getElementById('amount').value) || 1;
+            const total = (parseFloat(PRICE) * amt).toFixed(5);
+            document.getElementById('cost').textContent = total + ' ETH';
+        }
+
+        // Setup controls
+        document.getElementById('decBtn').onclick = () => {
+            const inp = document.getElementById('amount');
+            if (inp.value > 1) {
+                inp.value = parseInt(inp.value) - 1;
+                updateCost();
+            }
+        };
+
+        document.getElementById('incBtn').onclick = () => {
+            const inp = document.getElementById('amount');
+            if (inp.value < 50) {
+                inp.value = parseInt(inp.value) + 1;
+                updateCost();
+            }
+        };
+
+        // Connect wallet
+        async function connectWallet() {
+            try {
+                if (!window.ethereum) {
+                    showMsg('Please install a Web3 wallet (MetaMask, Rabby, etc.)', 'error');
+                    return false;
+                }
+
+                setBtnText('<span class="spinner"></span> Connecting...');
+                
+                provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                userAddr = accounts[0];
+                
+                const network = await provider.getNetwork();
+                if (Number(network.chainId) !== CHAIN_ID) {
+                    await switchNetwork();
+                }
+
+                signer = await provider.getSigner();
+                contract = new ethers.Contract(CONTRACT, ABI, signer);
+                
+                isConnected = true;
+                document.getElementById('walletInfo').style.display = 'block';
+                document.getElementById('walletAddr').textContent = 
+                    userAddr.slice(0, 6) + '...' + userAddr.slice(-4);
+                setBtnText('MINT NOW');
+                
+                await loadData();
+                showMsg('Wallet connected!', 'success');
+                return true;
+                
+            } catch (err) {
+                console.error(err);
+                setBtnText('Connect Wallet');
+                if (!err.message.includes('rejected')) {
+                    showMsg('Failed to connect wallet', 'error');
+                }
+                return false;
+            }
+        }
+
+        // Switch to Base
+        async function switchNetwork() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x2105' }]
+                });
+            } catch (err) {
+                if (err.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0x2105',
+                            chainName: 'Base Mainnet',
+                            nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                            rpcUrls: ['https://mainnet.base.org'],
+                            blockExplorerUrls: ['https://basescan.org']
+                        }]
+                    });
+                } else {
+                    throw err;
+                }
+            }
+        }
+
+        // Load contract data
+        async function loadData() {
+            try {
+                const [total, userMints, remain] = await Promise.all([
+                    contract.totalMintCount(),
+                    contract.userMintCount(userAddr),
+                    contract.remainingMints()
+                ]);
+
+                document.getElementById('minted').textContent = total.toString();
+                document.getElementById('userMints').textContent = userMints + ' / 50';
+                document.getElementById('remaining').textContent = remain.toString();
+
+                const pct = (Number(total) / 20000 * 100).toFixed(1);
+                document.getElementById('progress').style.width = pct + '%';
+                document.getElementById('progress').textContent = pct + '%';
+            } catch (err) {
+                console.error('Load error:', err);
+            }
+        }
+
+        // Mint tokens
+        async function mintTokens() {
+            const amt = parseInt(document.getElementById('amount').value);
+            if (amt < 1 || amt > 50) {
+                showMsg('Amount must be 1-50', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('mainBtn');
+            btn.disabled = true;
+            setBtnText('<span class="spinner"></span> Minting...');
+
+            try {
+                const value = ethers.parseEther((parseFloat(PRICE) * amt).toString());
+                const tx = await contract.mint(amt, { value });
+                
+                showMsg('Transaction sent! Please wait...', 'info');
+                const receipt = await tx.wait();
+                
+                const tokens = (amt * 45000).toLocaleString();
+                showMsg(`✅ Successfully minted ${tokens} $GODMODE!`, 'success');
+                
+                await loadData();
+                
+                // Auto-share to Farcaster
+                setTimeout(() => {
+                    const text = `Just minted ${tokens} $GODMODE tokens! 🚀\n\nGet yours now 👇`;
+                    const url = 'https://claim-godmode-token.vercel.app/';
+                    const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(url)}`;
+                    window.open(shareUrl, '_blank');
+                }, 2000);
+                
+            } catch (err) {
+                console.error(err);
+                let msg = 'Minting failed';
+                if (err.message.includes('rejected')) msg = 'Transaction cancelled';
+                else if (err.message.includes('insufficient')) msg = 'Insufficient ETH';
+                showMsg(msg, 'error');
+            } finally {
+                btn.disabled = false;
+                setBtnText('MINT NOW');
+            }
+        }
+
+        // Main button handler
+        document.getElementById('mainBtn').onclick = async () => {
+            if (!isConnected) {
+                await connectWallet();
+            } else {
+                await mintTokens();
+            }
+        };
+
+        // Helper functions
+        function setBtnText(text) {
+            document.getElementById('btnText').innerHTML = text;
+        }
+
+        function showMsg(text, type) {
+            const msg = document.getElementById('statusMsg');
+            msg.className = 'status-msg msg-' + type;
+            msg.textContent = text;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    msg.className = 'status-msg';
+                }, 5000);
+            }
+        }
+
+        // Initialize
+        async function init() {
+            updateCost();
+            await initFarcaster();
+            setBtnText('Connect Wallet');
+        }
+
+        init();
+    </script>
 </body>
 </html>
