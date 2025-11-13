@@ -1,9 +1,0 @@
-{
-  "name": "CLAIM TOKEN $GODMODE FREE MINT",
-  "iconUrl": "https://YOUR_DOMAIN.vercel.app/icon.png",
-  "homeUrl": "https://YOUR_DOMAIN.vercel.app",
-  "action": {
-    "type": "frame",
-    "triggers": ["cast", "composer"]
-  }
-}
