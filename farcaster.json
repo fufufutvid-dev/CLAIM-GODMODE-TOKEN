@@ -1,18 +1,9 @@
 {
-  "accountAssociation": {
-    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIn0",
-    "payload": "eyJkb21haW4iOiJjbGFpbS1nb2Rtb2RlLXRva2VuLnZlcmNlbC5hcHAifQ",
-    "signature": "MHg..."
-  },
-  "frame": {
-    "version": "next",
-    "name": "$GODMODE Token - FREE MINT",
-    "iconUrl": "https://claim-godmode-token.vercel.app/icon.png",
-    "splashImageUrl": "https://claim-godmode-token.vercel.app/splash.png",
-    "splashBackgroundColor": "#667eea",
-    "homeUrl": "https://claim-godmode-token.vercel.app/",
-    "imageUrl": "https://claim-godmode-token.vercel.app/preview.png",
-    "buttonTitle": "🚀 MINT $GODMODE",
-    "webhookUrl": "https://claim-godmode-token.vercel.app/api/webhook"
+  "name": "CLAIM TOKEN $GODMODE FREE MINT",
+  "iconUrl": "https://YOUR_DOMAIN.vercel.app/icon.png",
+  "homeUrl": "https://YOUR_DOMAIN.vercel.app",
+  "action": {
+    "type": "frame",
+    "triggers": ["cast", "composer"]
   }
 }
