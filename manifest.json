@@ -1,0 +1,26 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhEQzM1NDJGMjU1NkFDRTk3MkIwQjc4QTREOEYyQjdBODNCRTQzNEREIn0",
+    "payload": "eyJkb21haW4iOiJjbGFpbS1nb2Rtb2RlLXRva2VuLnZlcmNlbC5hcHAifQ",
+    "signature": "MHg..."
+  },
+  "frame": {
+    "version": "next",
+    "imageUrl": "https://claim-godmode-token.vercel.app/og-image.png",
+    "button": {
+      "title": "⚡ MINT $GODMODE",
+      "action": {
+        "type": "launch_frame",
+        "name": "GODMODE Token Mint",
+        "url": "https://claim-godmode-token.vercel.app",
+        "splashImageUrl": "https://claim-godmode-token.vercel.app/splash.png",
+        "splashBackgroundColor": "#667eea"
+      }
+    }
+  },
+  "name": "GODMODE Token",
+  "description": "Claim your GODMODE tokens - Free mint for Farcaster users!",
+  "homeUrl": "https://claim-godmode-token.vercel.app",
+  "iconUrl": "https://claim-godmode-token.vercel.app/icon.png",
+  "version": "1.0.0"
+}
