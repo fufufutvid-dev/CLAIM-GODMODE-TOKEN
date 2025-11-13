@@ -1,4 +1,6 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -10,6 +12,10 @@
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
         },
         {
           "key": "Cache-Control",
@@ -27,7 +33,7 @@
       ]
     },
     {
-      "source": "/og.png",
+      "source": "/:path*.png",
       "headers": [
         {
           "key": "Cache-Control",
@@ -42,6 +48,12 @@
           "value": "*"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
     }
   ]
 }
