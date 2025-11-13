@@ -1,10 +1,15 @@
 {
-  "functions": {
-    "api/frame.js": {
-      "memory": 1024,
-      "maxDuration": 10
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/frame"
+    },
+    {
+      "source": "/app",
+      "destination": "/app.html"
     }
-  },
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
@@ -20,6 +25,10 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
         }
       ]
     },
