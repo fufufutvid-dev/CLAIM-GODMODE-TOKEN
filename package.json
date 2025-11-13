@@ -1,0 +1,19 @@
+{
+  "name": "claim-godmode-token",
+  "version": "1.0.0",
+  "description": "GODMODE Token Minting on Base Mainnet - Vercel Deployment",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static files ready for deployment'"
+  },
+  "keywords": [
+    "farcaster",
+    "frame",
+    "token",
+    "base",
+    "web3",
+    "vercel"
+  ],
+  "author": "egawizard",
+  "license": "MIT"
+}
