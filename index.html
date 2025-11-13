@@ -26,7 +26,10 @@
     <meta name="twitter:description" content="Get 45,000 $GODMODE tokens per mint! Max 50 mints per user." />
     <meta name="twitter:image" content="https://claim-godmode-token.vercel.app/og-image.png" />
     
+    <!-- Farcaster SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@farcaster/frame-sdk@0.1.0/dist/frame-sdk.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -351,6 +354,19 @@
             font-weight: 700;
             color: #333;
         }
+
+        .farcaster-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #8a63d2;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -359,6 +375,9 @@
             <div class="logo">$GODMODE</div>
             <div class="subtitle">Exclusive Farcaster Token</div>
             <div class="free-badge">🎁 FREE MINT</div>
+            <div class="farcaster-badge" id="fcBadge" style="display: none;">
+                ✓ Farcaster Connected
+            </div>
         </div>
 
         <div class="stats">
@@ -417,7 +436,7 @@
             </div>
 
             <button class="mint-button" id="mintBtn">
-                <span id="mintBtnText">Connect Wallet to Mint</span>
+                <span id="mintBtnText">Initializing...</span>
             </button>
 
             <div id="statusMessage"></div>
@@ -439,23 +458,51 @@
         const BASE_MAINNET_CHAIN_ID = 8453;
         const MINT_PRICE = '0.00012';
         
-        // Contract ABI (only functions we need)
+        // Contract ABI
         const CONTRACT_ABI = [
             "function mint(uint256 mintCount) external payable",
             "function totalMintCount() external view returns (uint256)",
             "function userMintCount(address) external view returns (uint256)",
             "function remainingMints() external view returns (uint256)",
-            "function remainingMintsForUser(address) external view returns (uint256)",
             "function TOTAL_MINTS_AVAILABLE() external view returns (uint256)",
             "function MAX_MINTS_PER_USER() external view returns (uint256)"
         ];
 
-        let provider, signer, contract, userAddress;
+        let sdk, provider, signer, contract, userAddress, fid;
+        let isFrameContext = false;
+
+        // Initialize Farcaster SDK
+        async function initFarcasterSDK() {
+            try {
+                // Check if running in Farcaster frame
+                if (typeof window.fc !== 'undefined' && window.fc.context) {
+                    isFrameContext = true;
+                    sdk = window.fc;
+                    
+                    // Get context from Farcaster
+                    const context = await sdk.context;
+                    if (context && context.user) {
+                        fid = context.user.fid;
+                        document.getElementById('fcBadge').style.display = 'inline-flex';
+                        showStatus('Connected to Farcaster', 'success');
+                    }
+
+                    // Signal ready to Farcaster
+                    sdk.actions.ready();
+                } else {
+                    console.log('Not in Farcaster frame context');
+                }
+            } catch (error) {
+                console.error('Farcaster SDK init error:', error);
+            }
+        }
 
         // Initialize app
         async function init() {
             updateMintAmount();
             setupEventListeners();
+            
+            await initFarcasterSDK();
             await connectWallet();
         }
 
@@ -488,21 +535,20 @@
             document.getElementById('totalCost').textContent = `${cost} ETH`;
         }
 
-        // Connect wallet
+        // Connect wallet (works with Farcaster wallet)
         async function connectWallet() {
             try {
-                // Check if in Farcaster context
                 if (window.ethereum) {
                     provider = new ethers.BrowserProvider(window.ethereum);
                     
-                    // Request account access
+                    // Request account access (Farcaster wallet will handle this)
                     const accounts = await provider.send("eth_requestAccounts", []);
                     userAddress = accounts[0];
                     
                     signer = await provider.getSigner();
                     contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-                    // Check network
+                    // Check and switch network if needed
                     const network = await provider.getNetwork();
                     if (Number(network.chainId) !== BASE_MAINNET_CHAIN_ID) {
                         await switchToBase();
@@ -517,11 +563,15 @@
                     // Load contract data
                     await loadContractData();
                 } else {
-                    showStatus('Please open in Farcaster app with wallet enabled', 'error');
+                    document.getElementById('mintBtnText').textContent = 'Wallet not detected';
+                    showStatus('Please open in Farcaster app', 'error');
                 }
             } catch (error) {
-                console.error('Connection error:', error);
-                showStatus('Failed to connect wallet', 'error');
+                console.error('Wallet connection error:', error);
+                document.getElementById('mintBtnText').textContent = 'Connect Wallet';
+                if (!error.message.includes('User rejected')) {
+                    showStatus('Failed to connect wallet', 'error');
+                }
             }
         }
 
@@ -530,10 +580,9 @@
             try {
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x2105' }], // 8453 in hex
+                    params: [{ chainId: '0x2105' }],
                 });
             } catch (switchError) {
-                // This error code indicates that the chain has not been added to MetaMask
                 if (switchError.code === 4902) {
                     try {
                         await window.ethereum.request({
@@ -564,12 +613,10 @@
                 const userMints = await contract.userMintCount(userAddress);
                 const remaining = await contract.remainingMints();
 
-                // Update UI
                 document.getElementById('mintedCount').textContent = totalMinted.toString();
                 document.getElementById('userMints').textContent = `${userMints} / 50`;
                 document.getElementById('remainingMints').textContent = remaining.toString();
 
-                // Update progress bar
                 const progress = (Number(totalMinted) / 20000) * 100;
                 document.getElementById('progressFill').style.width = progress + '%';
                 document.getElementById('progressPercent').textContent = progress.toFixed(1) + '%';
@@ -597,24 +644,17 @@
             mintBtn.innerHTML = '<span class="loading"></span> Minting...';
 
             try {
-                // Calculate total cost
                 const totalCost = ethers.parseEther((parseFloat(MINT_PRICE) * mintAmount).toString());
-
-                // Send transaction
                 const tx = await contract.mint(mintAmount, { value: totalCost });
                 
                 showStatus('Transaction submitted! Waiting for confirmation...', 'info');
                 
-                // Wait for transaction
                 const receipt = await tx.wait();
                 
                 showStatus(`✅ Successfully minted ${mintAmount * 45000} $GODMODE tokens!`, 'success');
                 
-                // Reload contract data
                 await loadContractData();
-
-                // Auto-cast to Farcaster
-                await autoCast(mintAmount, receipt.hash);
+                await postToFarcaster(mintAmount, receipt.hash);
 
             } catch (error) {
                 console.error('Mint error:', error);
@@ -631,21 +671,19 @@
             }
         }
 
-        // Auto-cast to Farcaster
-        async function autoCast(mintAmount, txHash) {
+        // Post to Farcaster after successful mint
+        async function postToFarcaster(mintAmount, txHash) {
             try {
                 const tokens = mintAmount * 45000;
-                const castText = `Just claimed ${tokens.toLocaleString()} $GODMODE tokens! 🚀\n\nFree mint now at https://claim-godmode-token.vercel.app/\n\nTx: https://basescan.org/tx/${txHash}`;
+                const castText = `Just claimed ${tokens.toLocaleString()} $GODMODE tokens! 🚀\n\nFree mint now 👇`;
+                const castUrl = 'https://claim-godmode-token.vercel.app/';
                 
-                // Try to use Farcaster API for casting
-                if (window.parent !== window) {
-                    window.parent.postMessage({
-                        type: 'createCast',
-                        data: { text: castText }
-                    }, '*');
+                if (isFrameContext && sdk && sdk.actions) {
+                    // Use Farcaster SDK to create cast
+                    await sdk.actions.openUrl(`https://warpcast.com/~/compose?text=${encodeURIComponent(castText)}&embeds[]=${encodeURIComponent(castUrl)}`);
                 }
             } catch (error) {
-                console.error('Auto-cast error:', error);
+                console.error('Post to Farcaster error:', error);
             }
         }
 
