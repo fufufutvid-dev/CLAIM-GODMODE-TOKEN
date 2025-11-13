@@ -1,10 +1,12 @@
 {
   "name": "claim-godmode-token",
   "version": "1.0.0",
-  "description": "GODMODE Token Minting on Base Mainnet - Vercel Deployment",
+  "description": "GODMODE Token Minting on Base Mainnet - Farcaster Frame",
+  "main": "api/frame.js",
   "scripts": {
     "dev": "vercel dev",
-    "build": "echo 'Static files ready for deployment'"
+    "build": "echo 'Static files ready for deployment'",
+    "deploy": "vercel --prod"
   },
   "keywords": [
     "farcaster",
@@ -12,8 +14,14 @@
     "token",
     "base",
     "web3",
-    "vercel"
+    "ethereum",
+    "erc20",
+    "godmode"
   ],
   "author": "egawizard",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/claim-godmode-token.git"
+  }
 }
