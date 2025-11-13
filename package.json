@@ -1,0 +1,14 @@
+{
+  "name": "godmode-token-mint",
+  "version": "1.0.0",
+  "description": "$GODMODE Token Minting dApp for Farcaster",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}
