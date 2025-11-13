@@ -6,13 +6,13 @@
   },
   "frame": {
     "version": "next",
-    "name": "$GODMODE Token Mint",
+    "name": "$GODMODE Token - FREE MINT",
     "iconUrl": "https://claim-godmode-token.vercel.app/icon.png",
     "splashImageUrl": "https://claim-godmode-token.vercel.app/splash.png",
     "splashBackgroundColor": "#667eea",
     "homeUrl": "https://claim-godmode-token.vercel.app/",
     "imageUrl": "https://claim-godmode-token.vercel.app/preview.png",
-    "buttonTitle": "🚀 Mint $GODMODE",
+    "buttonTitle": "🚀 MINT $GODMODE",
     "webhookUrl": "https://claim-godmode-token.vercel.app/api/webhook"
   }
 }
