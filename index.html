@@ -3,26 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$GODMODE Token Mint</title>
+    <title>CLAIM $GODMODE Token - FREE MINT</title>
     
-    <!-- Farcaster Frame Meta -->
+    <!-- Essential Farcaster Frame Meta Tags -->
     <meta property="fc:frame" content="vNext" />
     <meta property="fc:frame:image" content="https://claim-godmode-token.vercel.app/preview.png" />
-    <meta property="fc:frame:button:1" content="🚀 Mint $GODMODE" />
+    <meta property="fc:frame:image:aspect_ratio" content="1:1" />
+    <meta property="fc:frame:button:1" content="🚀 MINT $GODMODE" />
     <meta property="fc:frame:button:1:action" content="link" />
     <meta property="fc:frame:button:1:target" content="https://claim-godmode-token.vercel.app/" />
     
+    <!-- Open Graph -->
+    <meta property="og:title" content="CLAIM $GODMODE Token - FREE MINT" />
+    <meta property="og:description" content="Mint $GODMODE tokens on Base Mainnet. 45,000 tokens per mint, max 50 mints per user!" />
     <meta property="og:image" content="https://claim-godmode-token.vercel.app/preview.png" />
-    <meta property="og:title" content="$GODMODE Token Mint" />
+    <meta property="og:url" content="https://claim-godmode-token.vercel.app/" />
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #16213e 100%);
             min-height: 100vh;
             padding: 16px;
+            color: #fff;
         }
 
         .app {
@@ -32,227 +37,246 @@
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 28px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             margin-bottom: 16px;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .logo {
-            font-size: 40px;
+            font-size: 48px;
             font-weight: 900;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
         }
 
         .badge {
             display: inline-block;
             background: linear-gradient(135deg, #f093fb, #f5576c);
             color: white;
-            padding: 6px 16px;
-            border-radius: 16px;
-            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
         }
 
         .fc-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(138, 99, 210, 0.15);
-            color: #8a63d2;
-            padding: 5px 12px;
-            border-radius: 14px;
-            font-size: 11px;
+            gap: 8px;
+            background: rgba(138, 99, 210, 0.2);
+            color: #c4b5fd;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
             font-weight: 600;
-            margin-top: 8px;
+            margin-top: 10px;
+            border: 1px solid rgba(196, 181, 253, 0.3);
         }
 
         .info {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border: 1px solid rgba(102, 126, 234, 0.3);
             border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 13px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .info-row:last-child { margin-bottom: 0; }
+        .info-row span:first-child { opacity: 0.7; }
         .info-row span:last-child { font-weight: 700; }
 
         .progress {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 8px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
             font-weight: 600;
         }
 
         .progress-bar {
-            height: 18px;
-            background: #e5e5e5;
-            border-radius: 9px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            transition: width 0.4s ease;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transition: width 0.6s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
+            box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
         }
 
         .stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 14px;
+            margin-bottom: 24px;
         }
 
         .stat {
-            background: #f7f7f7;
-            padding: 16px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            border-radius: 14px;
             text-align: center;
         }
 
         .stat-label {
             font-size: 11px;
-            color: #888;
-            margin-bottom: 4px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: #333;
+            color: #fff;
         }
 
         .controls {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 14px;
+            margin-bottom: 16px;
         }
 
         .ctrl-btn {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border: none;
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border-radius: 10px;
-            font-size: 20px;
+            border-radius: 12px;
+            font-size: 22px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .ctrl-btn:active { transform: scale(0.95); background: #5568d3; }
+        .ctrl-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6); }
+        .ctrl-btn:active { transform: scale(0.95); }
         .ctrl-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .amount-input {
-            width: 68px;
-            height: 40px;
+            width: 80px;
+            height: 44px;
             text-align: center;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
-            border: 2px solid #e5e5e5;
-            border-radius: 10px;
-            background: #fafafa;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
             outline: none;
         }
 
         .cost {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             font-size: 13px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .cost-value {
-            font-size: 19px;
+            font-size: 22px;
             font-weight: 700;
-            color: #667eea;
+            color: #f093fb;
             display: block;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         .main-btn {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
+            border-radius: 14px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             transition: all 0.3s;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
-        .main-btn:active { transform: translateY(1px); }
-        .main-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .main-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.7); }
+        .main-btn:active { transform: translateY(0); }
+        .main-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .message {
-            margin-top: 14px;
-            padding: 12px;
-            border-radius: 10px;
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 12px;
             text-align: center;
             font-size: 13px;
             font-weight: 600;
             display: none;
         }
 
-        .msg-success { background: #d4edda; color: #155724; display: block; }
-        .msg-error { background: #f8d7da; color: #721c24; display: block; }
-        .msg-info { background: #d1ecf1; color: #0c5460; display: block; }
+        .msg-success { background: rgba(52, 211, 153, 0.2); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, 0.3); display: block; }
+        .msg-error { background: rgba(248, 113, 113, 0.2); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.3); display: block; }
+        .msg-info { background: rgba(96, 165, 250, 0.2); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.3); display: block; }
 
         .wallet-box {
-            margin-top: 14px;
-            padding: 12px;
-            background: #f7f7f7;
-            border-radius: 10px;
+            margin-top: 16px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             text-align: center;
             font-size: 11px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.6);
             display: none;
         }
 
         .wallet-addr {
             font-family: 'Courier New', monospace;
-            color: #667eea;
+            color: #c4b5fd;
             font-weight: 600;
-            margin-top: 4px;
-            font-size: 12px;
+            margin-top: 6px;
+            font-size: 13px;
         }
 
         .spinner {
@@ -264,7 +288,7 @@
             border-top-color: #fff;
             animation: spin 0.6s linear infinite;
             vertical-align: middle;
-            margin-right: 6px;
+            margin-right: 8px;
         }
 
         @keyframes spin {
@@ -273,19 +297,23 @@
 
         .footer {
             text-align: center;
-            margin-top: 16px;
-            padding: 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             backdrop-filter: blur(10px);
         }
 
         .footer a {
-            color: white;
+            color: #c4b5fd;
             text-decoration: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
+            transition: color 0.2s;
         }
+
+        .footer a:hover { color: #f093fb; }
     </style>
 </head>
 <body>
@@ -295,7 +323,7 @@
                 <div class="logo">$GODMODE</div>
                 <div class="badge">🎁 FREE MINT</div>
                 <div class="fc-badge" id="fcBadge" style="display: none;">
-                    ✓ Farcaster Wallet
+                    ✓ Farcaster Connected
                 </div>
             </div>
 
@@ -309,7 +337,7 @@
                     <span>45,000 Tokens</span>
                 </div>
                 <div class="info-row">
-                    <span>Max/User</span>
+                    <span>Max per User</span>
                     <span>50 Mints</span>
                 </div>
                 <div class="info-row">
@@ -364,7 +392,7 @@
 
         <div class="footer">
             <a href="https://basescan.org/address/0xfe0b0148A535ab66F83e19756A20A0b9fCAF1305" target="_blank">
-                View Contract →
+                View Contract on BaseScan →
             </a>
         </div>
     </div>
@@ -378,10 +406,11 @@
             chainId: 8453,
             price: '0.00012',
             abi: [
-                "function mint(uint256 count) external payable",
+                "function mint(uint256 mintCount) external payable",
                 "function totalMintCount() view returns (uint256)",
                 "function userMintCount(address) view returns (uint256)",
-                "function remainingMints() view returns (uint256)"
+                "function remainingMints() view returns (uint256)",
+                "function TOKENS_PER_MINT() view returns (uint256)"
             ]
         };
 
@@ -392,35 +421,40 @@
             userAddress: null,
             connected: false,
             context: null,
-            isReady: false
+            isReady: false,
+            isFarcaster: false
         };
 
         // Initialize Farcaster SDK
         async function initFarcaster() {
             try {
-                state.context = await sdk.context;
+                const context = await sdk.context;
+                state.context = context;
                 
-                if (state.context) {
-                    console.log('Farcaster context:', state.context);
+                if (context?.client?.clientFid) {
+                    console.log('✅ Farcaster context loaded:', context);
                     document.getElementById('fcBadge').style.display = 'inline-flex';
+                    state.isFarcaster = true;
                     
                     // Signal ready to Farcaster
                     sdk.actions.ready();
                     state.isReady = true;
+                } else {
+                    console.log('❌ Not in Farcaster app');
                 }
             } catch (err) {
-                console.error('Farcaster SDK error:', err);
+                console.error('Farcaster SDK initialization error:', err);
             }
         }
 
-        // Update cost
+        // Update cost display
         function updateCost() {
             const amt = parseInt(document.getElementById('amount').value) || 1;
             const total = (parseFloat(CONFIG.price) * amt).toFixed(5);
             document.getElementById('costValue').textContent = total + ' ETH';
         }
 
-        // Controls
+        // Control buttons
         document.getElementById('decBtn').onclick = () => {
             const inp = document.getElementById('amount');
             const val = parseInt(inp.value);
@@ -448,7 +482,7 @@
             if (type === 'success') {
                 setTimeout(() => {
                     msg.className = 'message';
-                }, 6000);
+                }, 8000);
             }
         }
 
@@ -457,52 +491,81 @@
             document.getElementById('btnText').innerHTML = html;
         }
 
-        // Connect wallet using Farcaster SDK
+        // Switch to Base network
+        async function switchToBase(provider) {
+            try {
+                await provider.send('wallet_switchEthereumChain', [{ chainId: '0x2105' }]);
+            } catch (err) {
+                if (err.code === 4902) {
+                    await provider.send('wallet_addEthereumChain', [{
+                        chainId: '0x2105',
+                        chainName: 'Base Mainnet',
+                        nativeCurrency: {
+                            name: 'Ethereum',
+                            symbol: 'ETH',
+                            decimals: 18
+                        },
+                        rpcUrls: ['https://mainnet.base.org'],
+                        blockExplorerUrls: ['https://basescan.org']
+                    }]);
+                } else {
+                    throw err;
+                }
+            }
+        }
+
+        // Connect wallet
         async function connectWallet() {
             try {
                 setBtnText('<span class="spinner"></span>Connecting...');
 
-                // Use Farcaster SDK wallet
-                if (state.isReady && sdk.wallet) {
-                    const provider = await sdk.wallet.ethProvider;
-                    
-                    if (!provider) {
-                        throw new Error('No Farcaster wallet provider');
-                    }
+                // Try Farcaster wallet first
+                if (state.isFarcaster && sdk.wallet) {
+                    try {
+                        const provider = await sdk.wallet.ethProvider;
+                        
+                        if (provider) {
+                            state.provider = new ethers.BrowserProvider(provider);
+                            const accounts = await state.provider.send("eth_requestAccounts", []);
+                            
+                            if (accounts && accounts.length > 0) {
+                                state.userAddress = accounts[0];
+                                
+                                // Check and switch network if needed
+                                const network = await state.provider.getNetwork();
+                                if (Number(network.chainId) !== CONFIG.chainId) {
+                                    await switchToBase(state.provider);
+                                }
 
-                    state.provider = new ethers.BrowserProvider(provider);
-                    const accounts = await state.provider.send("eth_requestAccounts", []);
-                    state.userAddress = accounts[0];
-                    
-                    // Check network
-                    const network = await state.provider.getNetwork();
-                    if (Number(network.chainId) !== CONFIG.chainId) {
-                        await switchToBase();
+                                state.signer = await state.provider.getSigner();
+                                state.contract = new ethers.Contract(CONFIG.contract, CONFIG.abi, state.signer);
+                                
+                                state.connected = true;
+                                document.getElementById('walletBox').style.display = 'block';
+                                document.getElementById('walletAddr').textContent = 
+                                    state.userAddress.slice(0, 6) + '...' + state.userAddress.slice(-4);
+                                setBtnText('🚀 MINT NOW');
+                                
+                                await loadContractData();
+                                showMsg('✅ Farcaster wallet connected!', 'success');
+                                return true;
+                            }
+                        }
+                    } catch (fcError) {
+                        console.error('Farcaster wallet error:', fcError);
                     }
-
-                    state.signer = await state.provider.getSigner();
-                    state.contract = new ethers.Contract(CONFIG.contract, CONFIG.abi, state.signer);
-                    
-                    state.connected = true;
-                    document.getElementById('walletBox').style.display = 'block';
-                    document.getElementById('walletAddr').textContent = 
-                        state.userAddress.slice(0, 6) + '...' + state.userAddress.slice(-4);
-                    setBtnText('MINT NOW');
-                    
-                    await loadContractData();
-                    showMsg('✅ Farcaster wallet connected!', 'success');
-                    return true;
                 }
                 
-                // Fallback to regular Web3 wallet if not in Farcaster
+                // Fallback to MetaMask/Web3 wallet
                 if (window.ethereum) {
                     state.provider = new ethers.BrowserProvider(window.ethereum);
                     const accounts = await state.provider.send("eth_requestAccounts", []);
                     state.userAddress = accounts[0];
                     
+                    // Check and switch network
                     const network = await state.provider.getNetwork();
                     if (Number(network.chainId) !== CONFIG.chainId) {
-                        await switchToBase();
+                        await switchToBase(state.provider);
                     }
 
                     state.signer = await state.provider.getSigner();
@@ -512,7 +575,7 @@
                     document.getElementById('walletBox').style.display = 'block';
                     document.getElementById('walletAddr').textContent = 
                         state.userAddress.slice(0, 6) + '...' + state.userAddress.slice(-4);
-                    setBtnText('MINT NOW');
+                    setBtnText('🚀 MINT NOW');
                     
                     await loadContractData();
                     showMsg('✅ Wallet connected!', 'success');
@@ -526,31 +589,10 @@
             } catch (err) {
                 console.error('Connect error:', err);
                 setBtnText('Connect Wallet');
-                if (!err.message.includes('rejected')) {
-                    showMsg('Failed to connect. Please try again.', 'error');
+                if (!err.message?.includes('rejected') && !err.message?.includes('denied')) {
+                    showMsg('Connection failed. Please try again.', 'error');
                 }
                 return false;
-            }
-        }
-
-        // Switch to Base
-        async function switchToBase() {
-            try {
-                await state.provider.send('wallet_switchEthereumChain', [{ chainId: '0x2105' }]);
-            } catch (err) {
-                if (err.code === 4902) {
-                    await state.provider.send('wallet_addEthereumChain', [{
-                        chainId: '0x2105',
-                        chainName: 'Base Mainnet',
-                        nativeCurrency: {
-                            name: 'Ethereum',
-                            symbol: 'ETH',
-                            decimals: 18
-                        },
-                        rpcUrls: ['https://mainnet.base.org'],
-                        blockExplorerUrls: ['https://basescan.org']
-                    }]);
-                }
             }
         }
 
@@ -563,11 +605,15 @@
                     state.contract.remainingMints()
                 ]);
 
-                document.getElementById('minted').textContent = total.toString();
-                document.getElementById('userMints').textContent = userMints + ' / 50';
-                document.getElementById('remaining').textContent = remain.toString();
+                const totalNum = Number(total);
+                const userNum = Number(userMints);
+                const remainNum = Number(remain);
 
-                const pct = (Number(total) / 20000 * 100).toFixed(1);
+                document.getElementById('minted').textContent = totalNum.toLocaleString();
+                document.getElementById('userMints').textContent = userNum + ' / 50';
+                document.getElementById('remaining').textContent = remainNum.toLocaleString();
+
+                const pct = (totalNum / 20000 * 100).toFixed(1);
                 const bar = document.getElementById('progressBar');
                 bar.style.width = pct + '%';
                 bar.textContent = pct + '%';
@@ -592,34 +638,41 @@
                 const value = ethers.parseEther((parseFloat(CONFIG.price) * amt).toString());
                 const tx = await state.contract.mint(amt, { value });
                 
-                showMsg('⏳ Transaction submitted! Waiting...', 'info');
-                await tx.wait();
+                showMsg('⏳ Transaction submitted! Waiting for confirmation...', 'info');
+                const receipt = await tx.wait();
                 
                 const tokens = (amt * 45000).toLocaleString();
-                showMsg(`🎉 Successfully minted ${tokens} $GODMODE!`, 'success');
+                showMsg(`🎉 Successfully minted ${tokens} $GODMODE tokens!`, 'success');
                 
                 await loadContractData();
                 
                 // Auto-cast using Farcaster SDK
-                if (state.isReady && sdk.actions.openUrl) {
-                    const text = `Just minted ${tokens} $GODMODE tokens! 🚀\n\nGet yours now 👇`;
-                    const url = 'https://claim-godmode-token.vercel.app/';
-                    const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(url)}`;
-                    
+                if (state.isFarcaster && sdk.actions.openUrl) {
                     setTimeout(() => {
+                        const text = `Just minted ${tokens} $GODMODE tokens! 🚀\n\nGet yours now 👇`;
+                        const url = 'https://claim-godmode-token.vercel.app/';
+                        const shareUrl = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}&embeds[]=${encodeURIComponent(url)}`;
+                        
                         sdk.actions.openUrl(shareUrl);
                     }, 2000);
                 }
                 
             } catch (err) {
                 console.error('Mint error:', err);
-                let msg = 'Transaction failed';
-                if (err.message.includes('rejected')) msg = 'Transaction cancelled';
-                else if (err.message.includes('insufficient')) msg = 'Insufficient ETH';
+                let msg = 'Transaction failed. Please try again.';
+                if (err.message?.includes('rejected') || err.message?.includes('denied')) {
+                    msg = 'Transaction cancelled by user';
+                } else if (err.message?.includes('insufficient')) {
+                    msg = 'Insufficient ETH balance';
+                } else if (err.message?.includes('user mint limit')) {
+                    msg = 'You have reached the maximum mints per user (50)';
+                } else if (err.message?.includes('total mint limit')) {
+                    msg = 'All tokens have been minted!';
+                }
                 showMsg(msg, 'error');
             } finally {
                 btn.disabled = false;
-                setBtnText('MINT NOW');
+                setBtnText('🚀 MINT NOW');
             }
         }
 
@@ -632,11 +685,10 @@
             }
         };
 
-        // Initialize
+        // Initialize app
         async function init() {
             updateCost();
             await initFarcaster();
-            setBtnText('Connect Wallet');
             
             // Load initial data with public provider
             try {
@@ -648,18 +700,25 @@
                     publicContract.remainingMints()
                 ]);
 
-                document.getElementById('minted').textContent = total.toString();
-                document.getElementById('remaining').textContent = remain.toString();
+                const totalNum = Number(total);
+                const remainNum = Number(remain);
 
-                const pct = (Number(total) / 20000 * 100).toFixed(1);
+                document.getElementById('minted').textContent = totalNum.toLocaleString();
+                document.getElementById('remaining').textContent = remainNum.toLocaleString();
+
+                const pct = (totalNum / 20000 * 100).toFixed(1);
                 const bar = document.getElementById('progressBar');
                 bar.style.width = pct + '%';
                 bar.textContent = pct + '%';
+                
+                setBtnText('Connect Wallet');
             } catch (err) {
-                console.log('Could not load initial data');
+                console.error('Could not load initial data:', err);
+                setBtnText('Connect Wallet');
             }
         }
 
+        // Start the app
         init();
     </script>
 </body>
